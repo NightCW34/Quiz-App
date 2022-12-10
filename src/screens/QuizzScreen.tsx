@@ -26,7 +26,13 @@ const QuizzScreen = ({ navigation }: any) => {
     const token =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Imp1YW5AZ21haWwuY29tIiwiaWF0IjoxNjcwNDkyNDM3LCJleHAiOjE2OTIwOTI0Mzd9.gYKOJSyZLsWH0eMAwEOprPJD5Rsn8DBGBUnVrbDYxek";
 
-    const url = "https://localhost:3002/item/";
+    /**
+     * Cambiar url si usa ngrok o
+     * localhost:3002 si planea verlo solo desde la web por la peticion https
+     * cambiar antes de /item
+     */
+
+    const url = "https://d6ab-165-98-43-146.ngrok.io/item/";
     const res = await fetch(url, {
       headers: {
         authorization: `Bearer ${token}`,
@@ -87,6 +93,7 @@ const QuizzScreen = ({ navigation }: any) => {
         questions && (
           <View style={styles.parent}>
             <View style={styles.top}>
+              <BigText style={{ color: colors.black }}>{score + 1}/10</BigText>
               <BigText style={{ fontSize: 24, color: colors.black }}>
                 Q. {questions[ques].question}
               </BigText>

@@ -24,8 +24,9 @@ const HomeScreen = ({ navigation }: any) => {
             Quiz App
           </BigText>
           <RegularText style={{ fontSize: 18 }}>
-            Pon aprueba tu conocimiento sobre informatica
+            Pon aprueba tu conocimiento
           </RegularText>
+          <RegularText style={{ fontSize: 18 }}>sobre informatica</RegularText>
         </View>
         <View style={{ marginBottom: 10 }}>
           <RegularButton
