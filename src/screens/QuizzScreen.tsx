@@ -24,7 +24,7 @@ const QuizzScreen = ({ navigation }: any) => {
   const getQuiz = async () => {
     setIsLoading(true);
     const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Imp1YW5AZ21haWwuY29tIiwiaWF0IjoxNjcwNDkyNDM3LCJleHAiOjE2OTIwOTI0Mzd9.gYKOJSyZLsWH0eMAwEOprPJD5Rsn8DBGBUnVrbDYxek";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFzYWVsQGdtYWlsLmNvbSIsImlhdCI6MTY4MzQ4MTAxNSwiZXhwIjoxNjgzNDg0NjE1fQ.g3X5gabgLKKirQagg9LrLAAT7aeI8r2tfmLPs7JfRiw";
 
     /**
      * Cambiar url si usa ngrok o
@@ -32,7 +32,7 @@ const QuizzScreen = ({ navigation }: any) => {
      * cambiar antes de /item
      */
 
-    const url = "https://d6ab-165-98-43-146.ngrok.io/item/";
+    const url = "http://localhost:3002/item/";
     const res = await fetch(url, {
       headers: {
         authorization: `Bearer ${token}`,
@@ -93,7 +93,7 @@ const QuizzScreen = ({ navigation }: any) => {
         questions && (
           <View style={styles.parent}>
             <View style={styles.top}>
-              <BigText style={{ color: colors.black }}>{score + 1}/10</BigText>
+              <BigText style={{ color: colors.black }}>{ques + 1} /10</BigText>
               <BigText style={{ fontSize: 24, color: colors.black }}>
                 Q. {questions[ques].question}
               </BigText>

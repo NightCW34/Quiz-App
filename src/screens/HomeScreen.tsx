@@ -2,12 +2,10 @@ import { StyleSheet, View, Image } from "react-native";
 import React from "react";
 
 import RegularButton from "../components/Buttons/RegularButton";
-import MainContainer from "../components/Containers/MainContainer";
 import BigText from "../components/Texts/BigText";
 import { colors } from "../components/colors";
 import RegularText from "../components/Texts/RegularText";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 const HomeScreen = ({ navigation }: any) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
