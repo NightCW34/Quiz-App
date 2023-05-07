@@ -1,11 +1,13 @@
 import { StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import MainContainer from "../components/Containers/MainContainer";
 import OptionButton from "../components/Buttons/OptionButton";
 import ActionButton from "../components/Buttons/ActionButton";
 import BigText from "../components/Texts/BigText";
 import { colors } from "../components/colors";
+import { Text } from "react-native";
 
 const shuffleArray = (array: string[]) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -20,11 +22,12 @@ const QuizzScreen = ({ navigation }: any) => {
   const [options, setOptions] = useState([]);
   const [score, setScore] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
 
   const getQuiz = async () => {
     setIsLoading(true);
     const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFzYWVsQGdtYWlsLmNvbSIsImlhdCI6MTY4MzQ4MTAxNSwiZXhwIjoxNjgzNDg0NjE1fQ.g3X5gabgLKKirQagg9LrLAAT7aeI8r2tfmLPs7JfRiw";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFzYWVsQGdtYWlsLmNvbSIsImlhdCI6MTY4MzQ4ODY0OSwiZXhwIjoxNjgzNDkyMjQ5fQ.hhIH2ptwN8eA2igfP1cBEjHlFbdNuGG1iIN1LzxzcpQ";
 
     /**
      * Cambiar url si usa ngrok o
@@ -32,7 +35,7 @@ const QuizzScreen = ({ navigation }: any) => {
      * cambiar antes de /item
      */
 
-    const url = "http://localhost:3002/item/";
+    const url = "https://62eb-138-97-162-166.ngrok.io/item/";
     const res = await fetch(url, {
       headers: {
         authorization: `Bearer ${token}`,
@@ -42,14 +45,6 @@ const QuizzScreen = ({ navigation }: any) => {
     setQuestions(data);
     setOptions(generateOptionsAndShuffle(data[0]));
     setIsLoading(false);
-  };
-  useEffect(() => {
-    getQuiz();
-  }, []);
-
-  const handleNextPress = () => {
-    setQues(ques + 1);
-    setOptions(generateOptionsAndShuffle(questions[ques + 1]));
   };
 
   const generateOptionsAndShuffle = (_question: any) => {
@@ -61,15 +56,21 @@ const QuizzScreen = ({ navigation }: any) => {
   };
 
   const handleSelectedOption = (_option: string) => {
+    setSelectedOption(_option);
     if (_option === questions[ques].correct_answer) {
       setScore(score + 10);
     }
     if (ques !== 9) {
-      setQues(ques + 1);
-      setOptions(generateOptionsAndShuffle(questions[ques + 1]));
+      setTimeout(() => {
+        setQues(ques + 1);
+        setOptions(generateOptionsAndShuffle(questions[ques + 1]));
+        setSelectedOption("");
+      }, 1000);
     }
     if (ques === 9) {
-      handleShowResult();
+      setTimeout(() => {
+        handleShowResult();
+      }, 1000);
     }
   };
 
@@ -78,6 +79,33 @@ const QuizzScreen = ({ navigation }: any) => {
       score: score,
     });
   };
+
+  useEffect(() => {
+    getQuiz().catch((error) => {
+      console.log("Error al obtener las preguntas", error);
+    });
+  }, []);
+
+  const handleNextPress = () => {
+    setQues(ques + 1);
+    setOptions(generateOptionsAndShuffle(questions[ques + 1]));
+  };
+
+  if (questions && questions.length < 10) {
+    return (
+      <SafeAreaView
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Text style={{ fontSize: 20 }}>
+          No hay suficientes preguntas disponibles.
+        </Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <MainContainer>
@@ -99,19 +127,36 @@ const QuizzScreen = ({ navigation }: any) => {
               </BigText>
             </View>
             <View style={styles.options}>
-              <OptionButton onPress={() => handleSelectedOption(options[0])}>
-                {[options[0]]}
+              <OptionButton
+                onPress={() => handleSelectedOption(options[0])}
+                isSelected={selectedOption === options[0]}
+                isCorrect={options[0] === questions[ques].correct_answer} // agrega esta línea
+              >
+                {options[0]}
               </OptionButton>
-              <OptionButton onPress={() => handleSelectedOption(options[1])}>
-                {[options[1]]}
+              <OptionButton
+                onPress={() => handleSelectedOption(options[1])}
+                isSelected={selectedOption === options[1]}
+                isCorrect={options[1] === questions[ques].correct_answer} // agrega esta línea
+              >
+                {options[1]}
               </OptionButton>
-              <OptionButton onPress={() => handleSelectedOption(options[2])}>
-                {[options[2]]}
+              <OptionButton
+                onPress={() => handleSelectedOption(options[2])}
+                isSelected={selectedOption === options[2]}
+                isCorrect={options[2] === questions[ques].correct_answer} // agrega esta línea
+              >
+                {options[2]}
               </OptionButton>
-              <OptionButton onPress={() => handleSelectedOption(options[3])}>
-                {[options[3]]}
+              <OptionButton
+                onPress={() => handleSelectedOption(options[3])}
+                isSelected={selectedOption === options[3]}
+                isCorrect={options[3] === questions[ques].correct_answer} // agrega esta línea
+              >
+                {options[3]}
               </OptionButton>
             </View>
+
             <View style={styles.bottom}>
               {ques !== 9 && (
                 <ActionButton onPress={handleNextPress}>SKIP</ActionButton>

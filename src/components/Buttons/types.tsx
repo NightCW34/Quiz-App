@@ -7,8 +7,10 @@ import {
 } from "react-native";
 
 export interface ButtonProps {
-  children: ReactNode;
+  onPress: () => void;
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
-  onPress?: ((event: GestureResponderEvent) => void) | undefined;
+  isSelected?: boolean;
+  isCorrect?: boolean;
+  children?: React.ReactNode;
 }

@@ -1,29 +1,55 @@
-import React, { FunctionComponent } from "react";
-import styled from "styled-components/native";
-
+import React from "react";
+import { TouchableOpacity, Text, StyleProp, ViewStyle } from "react-native";
 import { colors } from "../colors";
-const { white, primary, black } = colors;
-
-import RegularText from "../Texts/RegularText";
-
-const ButtonView = styled.TouchableOpacity`
-  background-color: ${white};
-  width: 100%;
-  height: 60px;
-  padding: 15px;
-  border-radius: 15px;
-  justify-content: center;
-`;
 
 import { ButtonProps } from "./types";
 
-const OptionButton: FunctionComponent<ButtonProps> = (props) => {
+const OptionButton = ({
+  onPress,
+  style,
+  textStyle,
+  isSelected = false,
+  isCorrect = false,
+  children,
+}: ButtonProps) => {
+  const backgroundColor = isSelected
+    ? isCorrect
+      ? colors.green
+      : colors.red
+    : colors.white;
+
   return (
-    <ButtonView onPress={props.onPress} style={props.style}>
-      <RegularText style={[{ color: black, fontSize: 15 }, props.textStyle]}>
-        {props.children}
-      </RegularText>
-    </ButtonView>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[
+        {
+          paddingVertical: 10,
+          width: "100%",
+          height: "15%",
+          paddingHorizontal: 20,
+          borderRadius: 10,
+          backgroundColor,
+          marginVertical: 10,
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        style,
+      ]}
+    >
+      <Text
+        style={[
+          {
+            color: isSelected ? colors.white : colors.black,
+            fontWeight: "700",
+            fontSize: 20,
+            textAlign: "center",
+          },
+          textStyle,
+        ]}
+      >
+        {children}
+      </Text>
+    </TouchableOpacity>
   );
 };
 
